@@ -1,12 +1,13 @@
 <script lang="ts">
-  import ConnectButton from "./lib/components/ConnectButton.svelte";
-  import FundSection from "./lib/components/FundSection.svelte";
-  import WithdrawButton from "./lib/components/WithdrawButton.svelte";
+    import ConnectButton from "./lib/components/ConnectButton.svelte";
+    import FundSection from "./lib/components/FundSection.svelte";
+    import WithdrawButton from "./lib/components/WithdrawButton.svelte";
 
-  import EthereumSvg from "/ethereum.svg";
-  import SvelteSvg from "/svelte.svg";
+    import EthereumSvg from "/ethereum.svg";
+    import SvelteSvg from "/svelte.svg";
 
-  let walletInfo: object;
+    let walletAddress: string;
+    let crowdfundedBalance = 0;
 </script>
 
 <main>
@@ -15,13 +16,15 @@
     <h3>Web3 Crowdfunding Platform</h3>
   </header>
 
-  <ConnectButton {walletInfo} />
+  <ConnectButton bind:walletAddress />
 
-  {#if walletInfo}
-    <button>Get balance</button>
-    <WithdrawButton />
+  {#if walletAddress}
+    <section>
+        <button>Crowdfunded balance: {crowdfundedBalance}</button>
+        <WithdrawButton />
 
-    <FundSection />
+        <FundSection />
+    </section>
   {/if}
 
   <footer>
@@ -42,7 +45,7 @@
     box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, .2);
     border-radius: 8px;
   }
-  
+
   footer {
     display: flex;
     justify-content: center;
