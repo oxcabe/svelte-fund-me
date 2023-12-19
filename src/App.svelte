@@ -1,13 +1,41 @@
 <script lang="ts">
+    import { ethers, formatEther } from "ethers";
+    import type { SDKProvider } from "@metamask/sdk";
+
     import ConnectButton from "./lib/components/ConnectButton.svelte";
     import FundSection from "./lib/components/FundSection.svelte";
     import WithdrawButton from "./lib/components/WithdrawButton.svelte";
 
+    import { CONTRACT_ABI, CONTRACT_ADDRESS } from "./lib/constants";
+
     import EthereumSvg from "/ethereum.svg";
     import SvelteSvg from "/svelte.svg";
 
-    let walletAddress: string;
-    let crowdfundedBalance = 0;
+    let connectProvider: SDKProvider;
+    let ethersProvider: ethers.BrowserProvider;
+
+    let fundMeContract: ethers.Contract;
+
+    let walletAddress = "";
+    let crowdfundedBalance = "";
+
+    async function setUp() {
+        ethersProvider = new ethers.BrowserProvider(connectProvider);
+        const signer = await ethersProvider.getSigner();
+
+        fundMeContract = new ethers.Contract(
+            CONTRACT_ADDRESS, CONTRACT_ABI, signer
+        );
+    }
+
+    async function getBalance() {
+        crowdfundedBalance = formatEther(
+            await ethersProvider.getBalance(CONTRACT_ADDRESS)
+        );
+    }
+
+    $: walletAddress && setUp();
+    $: ethersProvider && getBalance();
 </script>
 
 <main>
@@ -16,12 +44,19 @@
     <h3>Web3 Crowdfunding Platform</h3>
   </header>
 
-  <ConnectButton bind:walletAddress />
+  <ConnectButton bind:connectProvider bind:walletAddress />
 
   {#if walletAddress}
     <section>
-        <button>Crowdfunded balance: {crowdfundedBalance}</button>
-        <WithdrawButton />
+        <div>
+            {#if crowdfundedBalance}
+                <p>Balance: {crowdfundedBalance} ETH</p>
+            {:else}
+                <p>Retrieving balance...</p>
+            {/if}
+            <!-- TODO: Only show withdraw button for contract owner -->
+            <WithdrawButton />
+        </div>
 
         <FundSection />
     </section>
@@ -40,8 +75,10 @@
   main {
     display: flex;
     flex-direction: column;
-    background-color: #242424;
+
     padding: 72px 128px 16px 128px;
+
+    background-color: #242424;
     box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, .2);
     border-radius: 8px;
   }

@@ -14,15 +14,15 @@
         }
     });
 
-    let ethereumProvider: SDKProvider;
+    export let connectProvider: SDKProvider;
     
     onMount(async () => {
         await MMSDK.init();
-        ethereumProvider = MMSDK.getProvider();
+        connectProvider = MMSDK.getProvider();
     });
 
     function connectToMetamask() {
-        ethereumProvider.request({ method: 'eth_requestAccounts', params: [] })
+        connectProvider.request({ method: 'eth_requestAccounts', params: [] })
             .then((res) => { 
                 if (Array.isArray(res) && res.length > 0) {
                     walletAddress = res[0];
@@ -35,7 +35,7 @@
 {#await MMSDK.init() then}
 {#if walletAddress}
     <button>🟢 Connected | {walletAddress}</button>
-{:else if ethereumProvider}
+{:else if connectProvider}
     <button on:click={connectToMetamask}>🔴 Connect</button>
 {/if}
 {/await}
