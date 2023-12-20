@@ -1,11 +1,11 @@
 export enum FundingState {
-    Visitor = "VISITOR",
-    Funder = "FUNDER",
-    Owner = "OWNER",
-};
+	Visitor = 'VISITOR',
+	Funder = 'FUNDER',
+	Owner = 'OWNER'
+}
 
 export const FundingStateToEmoji = {
-    "VISITOR": "👀",
-    "FUNDER": "🪙",
-    "OWNER": "🙌",
+	VISITOR: '👀',
+	FUNDER: '🪙',
+	OWNER: '🙌'
 };
