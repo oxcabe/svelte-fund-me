@@ -123,4 +123,10 @@ export const CONTRACT_ABI = [
         "stateMutability": "payable",
         "type": "receive"
     }
-]
+];
+
+export const CHAIN_NAMES = {
+    1: "Ethereum (Mainnet)",
+    11155111: "Ethereum (Sepolia)",
+    1337: "Anvil / Localnet",
+};

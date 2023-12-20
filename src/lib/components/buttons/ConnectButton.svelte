@@ -2,7 +2,11 @@
     import { onMount } from "svelte";
     import { MetaMaskSDK, SDKProvider } from "@metamask/sdk";
 
+    import { CHAIN_NAMES } from "../../constants";
+
     export let walletAddress = "";
+
+    let chainName = "";
 
     const MMSDK = new MetaMaskSDK({
         dappMetadata: {
@@ -16,7 +20,11 @@
     
     onMount(async () => {
         await MMSDK.init();
+
         connectProvider = MMSDK.getProvider();
+
+        const chainId = Number(connectProvider.chainId);
+        chainName = CHAIN_NAMES[chainId as keyof (typeof CHAIN_NAMES)];
     });
 
     function connectToMetamask() {
@@ -32,7 +40,7 @@
 
 {#await MMSDK.init() then}
 {#if walletAddress}
-    <button>🟢 Connected | {walletAddress}</button>
+    <button>🟢 Connected to {chainName} | {walletAddress}</button>
 {:else if connectProvider}
     <button on:click={connectToMetamask}>🔴 Connect</button>
 {/if}

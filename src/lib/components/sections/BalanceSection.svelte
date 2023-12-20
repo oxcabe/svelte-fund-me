@@ -40,6 +40,6 @@
         align-items: center;
     }
     .inline * {
-        margin: auto 12px;
+        margin: auto 6px;
     }
 </style>

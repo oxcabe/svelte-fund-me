@@ -40,9 +40,14 @@
 
   {#if ethersProvider && fundMeContract}
     <section>
-        <BalanceSection {ethersProvider} />
-        <FundSection {ethersProvider} {fundMeContract} />
-        <RoleSection {ethersProvider} {fundMeContract} />
+        <div id="balance">
+          <BalanceSection {ethersProvider} />
+        </div>
+        <div id="contract-interactions">
+            <div><FundSection /></div>
+            <div class="splitter"></div>
+            <div><RoleSection {ethersProvider} {fundMeContract} /></div>
+        </div>
     </section>
   {/if}
 
@@ -71,14 +76,15 @@
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    height: 20vh;
+    width: 100%;
+    height: 25vh;
     margin: 8px auto;
   }
 
   footer {
     display: flex;
     justify-content: center;
-    margin-top: 24px;
+    margin-top: 64px;
     color: #888;
     font-size: 14px;
   }
@@ -90,5 +96,28 @@
     vertical-align: top;
     position: relative;
     bottom: 0.15em;
+  }
+
+  .splitter {
+    background-color: rgb(133, 133, 133);
+    max-width: 1px;
+    width: 1px;
+    height: 100%;
+  }
+
+  #contract-interactions {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  @media (max-width: 830px) {
+    section {
+      height: 35vh;
+    }
+
+    #contract-interactions {
+      flex-direction: column;
+    }
   }
 </style>

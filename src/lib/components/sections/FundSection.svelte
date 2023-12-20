@@ -1,7 +1,7 @@
 <script lang="ts">
     import { ethers } from "ethers";
-    export let ethersProvider: ethers.BrowserProvider;
-    export let fundMeContract: ethers.Contract;
+    // export let ethersProvider: ethers.BrowserProvider;
+    // export let fundMeContract: ethers.Contract;
 </script>
 
 <section>
@@ -12,11 +12,17 @@
 <style>
     section {
         display: flex;
+        flex-direction: column;
         justify-content: center;
+        align-items: center;
     }
     input {
         text-align: center;
         font-weight: bold;
         font-size: 1em;
+        height: 32px;
+    }
+    button {
+        width: 100%;
     }
 </style>

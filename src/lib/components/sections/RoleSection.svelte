@@ -45,8 +45,10 @@
 <section>
     {#if fundingState}
         <div class="inline">
-            <h3>Funding state:</h3>
-            <h3>{fundingState} {FundingStateToEmoji[fundingState]}</h3>
+            <div>
+                <h3>Funding state:</h3>
+                <h3>{fundingState} {FundingStateToEmoji[fundingState]}</h3>
+            </div>
         {#if fundingState === FundingState.Owner }
             <WithdrawButton />
         {/if}
@@ -59,10 +61,15 @@
 <style>
     .inline {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
+        height: 13vh;
     }
-    .inline * {
-        margin: auto 12px;
+    .inline div {
+        display: flex;
+    }
+    .inline h3 {
+        margin: 5px;
     }
 </style>
