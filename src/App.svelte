@@ -16,6 +16,7 @@
     let fundMeContract: ethers.Contract;
 
     let walletAddress = "";
+    let showWithdrawButton = false;
 
     async function setup() {
         ethersProvider = new ethers.BrowserProvider(connectProvider);
@@ -23,6 +24,11 @@
 
         fundMeContract = new ethers.Contract(
             CONTRACT_ADDRESS, CONTRACT_ABI, signer
+        );
+
+        const contractOwner = await fundMeContract.getOwner();
+        showWithdrawButton = (
+          contractOwner.toLowerCase() === walletAddress.toLowerCase()
         );
     }
 
@@ -39,7 +45,7 @@
 
   {#if ethersProvider}
     <section>
-        <BalanceSection {ethersProvider}/>
+        <BalanceSection {ethersProvider} {showWithdrawButton} />
         <FundSection />
     </section>
   {/if}

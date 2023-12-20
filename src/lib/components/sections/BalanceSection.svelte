@@ -5,6 +5,8 @@
     import WithdrawButton from "../buttons/WithdrawButton.svelte";
 
     export let ethersProvider: ethers.Provider;
+    export let showWithdrawButton: boolean;
+
     let crowdfundedBalance = "";
 
     async function getBalance() {
@@ -24,6 +26,7 @@
     {:else}
         <p>Retrieving balance...</p>
     {/if}
-    <!-- TODO: Only show withdraw button for contract owner -->
-    <WithdrawButton />
+    {#if showWithdrawButton }
+        <WithdrawButton />
+    {/if}
 </div>
