@@ -8,12 +8,7 @@
 	export let ethersProvider: ethers.BrowserProvider;
 	export let fundMeContract: ethers.Contract;
 
-	let crowdfundedBalance = '';
 	let fundingState: FundingState;
-
-	async function getCrowdfundedBalance() {
-		crowdfundedBalance = formatEther(await ethersProvider.getBalance(CONTRACT_ADDRESS));
-	}
 
 	async function getFundingState() {
 		const contractOwner = await fundMeContract.getOwner();
@@ -23,7 +18,7 @@
 
 		if (contractOwner.toLowerCase() === walletAddress.toLowerCase()) {
 			fundingState = FundingState.Owner;
-		} else if (Number(crowdfundedBalance) > 0) {
+		} else if (Number(fundedAmount) > 0) {
 			fundingState = FundingState.Funder;
 		} else {
 			fundingState = FundingState.Visitor;
@@ -31,7 +26,6 @@
 	}
 
 	onMount(async () => {
-		await getCrowdfundedBalance();
 		await getFundingState();
 	});
 </script>
