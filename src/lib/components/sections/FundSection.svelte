@@ -1,3 +1,9 @@
+<script lang="ts">
+    import { ethers } from "ethers";
+    export let ethersProvider: ethers.BrowserProvider;
+    export let fundMeContract: ethers.Contract;
+</script>
+
 <section>
     <input placeholder="Amount (in ETH)" type="text" name="amount in ETH">
     <button>Fund</button>
@@ -7,7 +13,6 @@
     section {
         display: flex;
         justify-content: center;
-        margin: 32px auto auto auto;
     }
     input {
         text-align: center;

@@ -2,31 +2,44 @@
     import { onMount } from "svelte";
     import { ethers, formatEther } from "ethers";
     import { CONTRACT_ADDRESS } from "../../constants";
+    import { FundingState, FundingStateToEmoji } from "../../funding";
     import WithdrawButton from "../buttons/WithdrawButton.svelte";
 
-    export let ethersProvider: ethers.Provider;
-    export let showWithdrawButton: boolean;
+    export let ethersProvider: ethers.BrowserProvider;
 
     let crowdfundedBalance = "";
 
-    async function getBalance() {
+    async function getCrowdfundedBalance() {
         crowdfundedBalance = formatEther(
             await ethersProvider.getBalance(CONTRACT_ADDRESS)
         );
     };
 
     onMount(async () => {
-        await getBalance();
+        await getCrowdfundedBalance();
     });
 </script>
 
-<div>
+<section>
     {#if crowdfundedBalance}
-        <p>Balance: {crowdfundedBalance} ETH</p>
+        <div class="inline">
+            <h2>Balance:</h2>
+            <h2>{crowdfundedBalance} ETH</h2>
+            <button on:click={getCrowdfundedBalance}>↻</button>
+        </div>
+
     {:else}
         <p>Retrieving balance...</p>
     {/if}
-    {#if showWithdrawButton }
-        <WithdrawButton />
-    {/if}
-</div>
+</section>
+
+<style>
+    .inline {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .inline * {
+        margin: auto 12px;
+    }
+</style>

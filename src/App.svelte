@@ -3,20 +3,20 @@
     import type { SDKProvider } from "@metamask/sdk";
 
     import ConnectButton from "./lib/components/buttons/ConnectButton.svelte";
+    import BalanceSection from "./lib/components/sections/BalanceSection.svelte";
     import FundSection from "./lib/components/sections/FundSection.svelte";
+    import RoleSection from "./lib/components/sections/RoleSection.svelte";
 
     import { CONTRACT_ABI, CONTRACT_ADDRESS } from "./lib/constants";
 
     import EthereumSvg from "/ethereum.svg";
     import SvelteSvg from "/svelte.svg";
-    import BalanceSection from "./lib/components/sections/BalanceSection.svelte";
 
     let connectProvider: SDKProvider;
     let ethersProvider: ethers.BrowserProvider;
     let fundMeContract: ethers.Contract;
 
     let walletAddress = "";
-    let showWithdrawButton = false;
 
     async function setup() {
         ethersProvider = new ethers.BrowserProvider(connectProvider);
@@ -24,11 +24,6 @@
 
         fundMeContract = new ethers.Contract(
             CONTRACT_ADDRESS, CONTRACT_ABI, signer
-        );
-
-        const contractOwner = await fundMeContract.getOwner();
-        showWithdrawButton = (
-          contractOwner.toLowerCase() === walletAddress.toLowerCase()
         );
     }
 
@@ -43,10 +38,11 @@
 
   <ConnectButton bind:connectProvider bind:walletAddress />
 
-  {#if ethersProvider}
+  {#if ethersProvider && fundMeContract}
     <section>
-        <BalanceSection {ethersProvider} {showWithdrawButton} />
-        <FundSection />
+        <BalanceSection {ethersProvider} />
+        <FundSection {ethersProvider} {fundMeContract} />
+        <RoleSection {ethersProvider} {fundMeContract} />
     </section>
   {/if}
 
@@ -71,10 +67,18 @@
     border-radius: 8px;
   }
 
+  section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 20vh;
+    margin: 8px auto;
+  }
+
   footer {
     display: flex;
     justify-content: center;
-    margin-top: 56px;
+    margin-top: 24px;
     color: #888;
     font-size: 14px;
   }
