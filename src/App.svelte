@@ -1,25 +1,23 @@
 <script lang="ts">
-    import { ethers, formatEther } from "ethers";
+    import { ethers } from "ethers";
     import type { SDKProvider } from "@metamask/sdk";
 
-    import ConnectButton from "./lib/components/ConnectButton.svelte";
-    import FundSection from "./lib/components/FundSection.svelte";
-    import WithdrawButton from "./lib/components/WithdrawButton.svelte";
+    import ConnectButton from "./lib/components/buttons/ConnectButton.svelte";
+    import FundSection from "./lib/components/sections/FundSection.svelte";
 
     import { CONTRACT_ABI, CONTRACT_ADDRESS } from "./lib/constants";
 
     import EthereumSvg from "/ethereum.svg";
     import SvelteSvg from "/svelte.svg";
+    import BalanceSection from "./lib/components/sections/BalanceSection.svelte";
 
     let connectProvider: SDKProvider;
     let ethersProvider: ethers.BrowserProvider;
-
     let fundMeContract: ethers.Contract;
 
     let walletAddress = "";
-    let crowdfundedBalance = "";
 
-    async function setUp() {
+    async function setup() {
         ethersProvider = new ethers.BrowserProvider(connectProvider);
         const signer = await ethersProvider.getSigner();
 
@@ -28,14 +26,7 @@
         );
     }
 
-    async function getBalance() {
-        crowdfundedBalance = formatEther(
-            await ethersProvider.getBalance(CONTRACT_ADDRESS)
-        );
-    }
-
-    $: walletAddress && setUp();
-    $: ethersProvider && getBalance();
+    $: walletAddress && setup();
 </script>
 
 <main>
@@ -46,18 +37,9 @@
 
   <ConnectButton bind:connectProvider bind:walletAddress />
 
-  {#if walletAddress}
+  {#if ethersProvider}
     <section>
-        <div>
-            {#if crowdfundedBalance}
-                <p>Balance: {crowdfundedBalance} ETH</p>
-            {:else}
-                <p>Retrieving balance...</p>
-            {/if}
-            <!-- TODO: Only show withdraw button for contract owner -->
-            <WithdrawButton />
-        </div>
-
+        <BalanceSection {ethersProvider}/>
         <FundSection />
     </section>
   {/if}

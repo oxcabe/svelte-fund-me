@@ -9,9 +9,7 @@
             name: document.title,
         },
         enableDebug: false,
-        logging: {
-            sdk: false,
-        }
+        extensionOnly: true,
     });
 
     export let connectProvider: SDKProvider;
