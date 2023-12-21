@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { MetaMaskSDK, SDKProvider } from '@metamask/sdk';
 
 	import { CHAIN_NAMES } from '../../constants';
@@ -20,26 +20,23 @@
 
 	function setWalletAddress(accountsResponse: string[] | unknown) {
 		if (Array.isArray(accountsResponse) && accountsResponse.length > 0) {
-			return accountsResponse[0];
+			walletAddress = accountsResponse[0];
+		} else {
+			walletAddress = '';
 		}
-		return '';
 	}
 
 	function connectToMetamask() {
 		connectProvider
 			.request({ method: 'eth_requestAccounts', params: [] })
-			.then((requestedAccounts) => {
-				walletAddress = setWalletAddress(requestedAccounts);
-			})
+			.then(setWalletAddress)
 			.catch((err) => {
 				console.error(err);
 				return;
 			});
 
 		// Add listener for disconnection
-		connectProvider.on('accountsChanged', (changedAccounts) => {
-			walletAddress = setWalletAddress(changedAccounts);
-		});
+		connectProvider.on('accountsChanged', setWalletAddress);
 	}
 
 	onMount(async () => {
@@ -49,6 +46,10 @@
 
 		const chainId = Number(connectProvider.chainId);
 		chainName = CHAIN_NAMES[chainId as keyof typeof CHAIN_NAMES];
+	});
+
+	onDestroy(() => {
+		connectProvider.removeListener('accountsChanged', setWalletAddress);
 	});
 </script>
 
