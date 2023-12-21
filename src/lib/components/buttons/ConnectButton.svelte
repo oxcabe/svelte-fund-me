@@ -18,7 +18,7 @@
 
 	export let connectProvider: SDKProvider;
 
-	function setWalletAddress(accountsResponse: any) {
+	function setWalletAddress(accountsResponse: string[] | unknown) {
 		if (Array.isArray(accountsResponse) && accountsResponse.length > 0) {
 			return accountsResponse[0];
 		}
