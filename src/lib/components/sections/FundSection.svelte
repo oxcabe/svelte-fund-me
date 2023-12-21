@@ -1,12 +1,31 @@
 <script lang="ts">
 	import { ethers } from 'ethers';
-	// export let ethersProvider: ethers.BrowserProvider;
-	// export let fundMeContract: ethers.Contract;
+	export let fundMeContract: ethers.Contract;
+
+	let fundAmount = '0.01';
+
+	async function fund() {
+		fundMeContract
+			.fund({ value: ethers.parseEther(fundAmount) })
+			.then(() => {
+				console.log('funded!');
+				// TODO: Trigger getBalance update
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	}
 </script>
 
 <section>
-	<input placeholder="Amount (in ETH)" type="text" name="amount in ETH" />
-	<button>Fund</button>
+	<input
+		min="0.01"
+		bind:value={fundAmount}
+		placeholder="Amount (in ETH)"
+		type="text"
+		name="amount in ETH"
+	/>
+	<button on:click={fund}>Fund</button>
 </section>
 
 <style>

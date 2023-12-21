@@ -42,7 +42,7 @@
 				<BalanceSection {ethersProvider} />
 			</div>
 			<div id="contract-interactions">
-				<div><FundSection /></div>
+				<div><FundSection {fundMeContract} /></div>
 				<div class="splitter"></div>
 				<div><RoleSection {ethersProvider} {fundMeContract} /></div>
 			</div>
