@@ -1,19 +1,18 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 	import { ethers } from 'ethers';
+
+	import { type TxnResultEvent, emitTxnResultEvent } from '../../utils';
+
 	export let fundMeContract: ethers.Contract;
 
+	const dispatch = createEventDispatcher<TxnResultEvent>();
 	let fundAmount = '0.01';
 
 	async function fund() {
-		fundMeContract
-			.fund({ value: ethers.parseEther(fundAmount) })
-			.then(() => {
-				console.log('funded!');
-				// TODO: Trigger getBalance update
-			})
-			.catch((err) => {
-				console.error(err);
-			});
+		fundMeContract.fund({ value: ethers.parseEther(fundAmount) }).then((res) => {
+			emitTxnResultEvent(res, dispatch, 'FundTxnResult');
+		});
 	}
 </script>
 

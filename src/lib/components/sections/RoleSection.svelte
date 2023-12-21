@@ -1,11 +1,14 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 	import { ethers, formatEther } from 'ethers';
+
 	import { FundingState, FundingStateToEmoji } from '../../funding';
+	import { type TxnResultEvent, emitTxnResultEvent } from '../../utils';
 
 	export let ethersProvider: ethers.BrowserProvider;
 	export let fundMeContract: ethers.Contract;
 
+	const dispatch = createEventDispatcher<TxnResultEvent>();
 	let fundingState: FundingState;
 	let fundedAmount: string;
 
@@ -27,9 +30,8 @@
 	async function withdraw() {
 		fundMeContract
 			.withdraw()
-			.then(() => {
-				console.log('withdrawn!');
-				// TODO: Trigger getBalance update
+			.then((res) => {
+				emitTxnResultEvent(res, dispatch, 'WithdrawTxnResult');
 			})
 			.catch((err) => {
 				console.error(err);

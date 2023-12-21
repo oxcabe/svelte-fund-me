@@ -7,9 +7,9 @@
 
 	let crowdfundedBalance = '';
 
-	async function getCrowdfundedBalance() {
+	export const getCrowdfundedBalance = async () => {
 		crowdfundedBalance = formatEther(await ethersProvider.getBalance(CONTRACT_ADDRESS));
-	}
+	};
 
 	onMount(async () => {
 		await getCrowdfundedBalance();
@@ -19,7 +19,7 @@
 <section>
 	{#if crowdfundedBalance}
 		<div class="inline">
-			<h2>Balance:</h2>
+			<h2>Total funded:</h2>
 			<h2>{crowdfundedBalance} ETH</h2>
 			<button on:click={getCrowdfundedBalance}>↻</button>
 		</div>

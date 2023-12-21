@@ -12,6 +12,8 @@
 	import EthereumSvg from '/ethereum.svg';
 	import SvelteSvg from '/svelte.svg';
 
+	let balanceSection: BalanceSection;
+
 	let connectProvider: SDKProvider;
 	let ethersProvider: ethers.BrowserProvider;
 	let fundMeContract: ethers.Contract;
@@ -23,6 +25,12 @@
 		const signer = await ethersProvider.getSigner();
 
 		fundMeContract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+	}
+
+	function handleTxnResultEvent(e: CustomEvent<{ status: number }>) {
+		if (e.detail.status > 0) {
+			balanceSection.getCrowdfundedBalance();
+		}
 	}
 
 	$: walletAddress && setup();
@@ -39,12 +47,18 @@
 	{#if walletAddress && ethersProvider && fundMeContract}
 		<section>
 			<div id="balance">
-				<BalanceSection {ethersProvider} />
+				<BalanceSection bind:this={balanceSection} {ethersProvider} />
 			</div>
 			<div id="contract-interactions">
-				<div><FundSection {fundMeContract} /></div>
+				<div><FundSection {fundMeContract} on:FundTxnResult={handleTxnResultEvent} /></div>
 				<div class="splitter"></div>
-				<div><RoleSection {ethersProvider} {fundMeContract} /></div>
+				<div>
+					<RoleSection
+						{ethersProvider}
+						{fundMeContract}
+						on:WithdrawTxnResult={handleTxnResultEvent}
+					/>
+				</div>
 			</div>
 		</section>
 	{/if}
