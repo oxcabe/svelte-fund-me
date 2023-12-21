@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { ethers, formatEther } from 'ethers';
-	import { CONTRACT_ADDRESS } from '../../constants';
 	import { FundingState, FundingStateToEmoji } from '../../funding';
-	import WithdrawButton from '../buttons/WithdrawButton.svelte';
 
 	export let ethersProvider: ethers.BrowserProvider;
 	export let fundMeContract: ethers.Contract;
@@ -25,6 +23,18 @@
 		}
 	}
 
+	async function withdraw() {
+		fundMeContract
+			.withdraw()
+			.then(() => {
+				console.log('withdrawn!');
+				// TODO: Trigger getBalance update
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	}
+
 	onMount(async () => {
 		await getFundingState();
 	});
@@ -38,7 +48,7 @@
 				<h3>{fundingState} {FundingStateToEmoji[fundingState]}</h3>
 			</div>
 			{#if fundingState === FundingState.Owner}
-				<WithdrawButton />
+				<button on:click={withdraw}>Withdraw</button>
 			{/if}
 		</div>
 	{:else}
@@ -59,5 +69,9 @@
 	}
 	.inline h3 {
 		margin: 5px;
+	}
+
+	.inline button {
+		width: 100%;
 	}
 </style>

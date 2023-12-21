@@ -2,8 +2,6 @@
 	import { onMount } from 'svelte';
 	import { ethers, formatEther } from 'ethers';
 	import { CONTRACT_ADDRESS } from '../../constants';
-	import { FundingState, FundingStateToEmoji } from '../../funding';
-	import WithdrawButton from '../buttons/WithdrawButton.svelte';
 
 	export let ethersProvider: ethers.BrowserProvider;
 
