@@ -36,7 +36,7 @@
 
 	<ConnectButton bind:connectProvider bind:walletAddress />
 
-	{#if ethersProvider && fundMeContract}
+	{#if walletAddress && ethersProvider && fundMeContract}
 		<section>
 			<div id="balance">
 				<BalanceSection {ethersProvider} />

@@ -7,12 +7,13 @@
 	export let fundMeContract: ethers.Contract;
 
 	let fundingState: FundingState;
+	let fundedAmount: string;
 
 	async function getFundingState() {
 		const contractOwner = await fundMeContract.getOwner();
 		const walletAddress = (await ethersProvider.getSigner()).address;
 
-		const fundedAmount = formatEther(await fundMeContract.getAddressToAmountFunded(walletAddress));
+		fundedAmount = formatEther(await fundMeContract.getAddressToAmountFunded(walletAddress));
 
 		if (contractOwner.toLowerCase() === walletAddress.toLowerCase()) {
 			fundingState = FundingState.Owner;
@@ -49,6 +50,8 @@
 			</div>
 			{#if fundingState === FundingState.Owner}
 				<button on:click={withdraw}>Withdraw</button>
+			{:else if fundingState === FundingState.Funder}
+				<p>You have funded: {fundedAmount} ETH</p>
 			{/if}
 		</div>
 	{:else}
