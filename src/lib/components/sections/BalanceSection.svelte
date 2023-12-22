@@ -19,8 +19,8 @@
 <section>
   {#if crowdfundedBalance}
     <div class="inline">
-      <h2>Total funded:</h2>
-      <h2>{crowdfundedBalance} ETH</h2>
+      <h3>Total funded:</h3>
+      <h3>{crowdfundedBalance} ETH</h3>
       <button on:click={getCrowdfundedBalance}>↻</button>
     </div>
   {:else}
@@ -38,9 +38,7 @@
     margin: auto 6px;
   }
 
-  @media (max-width: 830px) {
-    h2 {
-      white-space: nowrap;
-    }
+  .inline h3 {
+    white-space: nowrap;
   }
 </style>
