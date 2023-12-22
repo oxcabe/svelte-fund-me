@@ -32,7 +32,8 @@
   },
   "dependencies": {
     "@metamask/sdk": "^0.14.1",
-    "ethers": "^6.9.1"
+    "ethers": "^6.9.1",
+    "svelte-french-toast": "^1.2.0"
   },
   "lint-staged": {
     "**/*.{html,css,js,ts,svelte}": [
