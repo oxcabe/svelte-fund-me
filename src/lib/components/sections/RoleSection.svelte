@@ -12,6 +12,8 @@
   let fundingState: FundingState;
   let fundedAmount: string;
 
+  $: ethersProvider && getFundingState();
+
   async function getFundingState() {
     const contractOwner = await fundMeContract.getOwner();
     const walletAddress = (await ethersProvider.getSigner()).address;
