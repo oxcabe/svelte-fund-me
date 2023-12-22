@@ -2,12 +2,13 @@
   import { createEventDispatcher } from 'svelte';
   import { ethers } from 'ethers';
 
+  import { MINIMUM_FUNDING_AMOUNT } from '../../constants';
   import { type TxnResultEvent, emitTxnResultEvent } from '../../utils';
 
   export let fundMeContract: ethers.Contract;
 
   const dispatch = createEventDispatcher<TxnResultEvent>();
-  let fundAmount = '0.01';
+  let fundAmount = MINIMUM_FUNDING_AMOUNT;
 
   async function fund() {
     fundMeContract.fund({ value: ethers.parseEther(fundAmount) }).then((res) => {
@@ -18,7 +19,7 @@
 
 <section>
   <input
-    min="0.01"
+    min={MINIMUM_FUNDING_AMOUNT}
     bind:value={fundAmount}
     placeholder="Amount (in ETH)"
     type="text"

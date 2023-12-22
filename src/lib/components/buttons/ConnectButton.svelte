@@ -18,18 +18,26 @@
 
   export let connectProvider: SDKProvider;
 
-  function setWalletAddress(accountsResponse: string[] | unknown) {
+  const setChainName = () => {
+    const chainId = Number(connectProvider.chainId);
+    chainName = CHAIN_NAMES[chainId as keyof typeof CHAIN_NAMES];
+  };
+
+  const setWalletAddress = (accountsResponse: string[] | unknown) => {
     if (Array.isArray(accountsResponse) && accountsResponse.length > 0) {
       walletAddress = accountsResponse[0];
     } else {
       walletAddress = '';
     }
-  }
+  };
 
-  function connectToMetamask() {
+  const connectToMetamask = () => {
     connectProvider
       .request({ method: 'eth_requestAccounts', params: [] })
-      .then(setWalletAddress)
+      .then((res) => {
+        setWalletAddress(res);
+        setChainName();
+      })
       .catch((err) => {
         console.error(err);
         return;
@@ -37,19 +45,17 @@
 
     // Add listener for disconnection
     connectProvider.on('accountsChanged', setWalletAddress);
-  }
+    connectProvider.on('chainChanged', setChainName);
+  };
 
   onMount(async () => {
     await MMSDK.init();
-
     connectProvider = MMSDK.getProvider();
-
-    const chainId = Number(connectProvider.chainId);
-    chainName = CHAIN_NAMES[chainId as keyof typeof CHAIN_NAMES];
   });
 
   onDestroy(() => {
-    connectProvider.removeListener('accountsChanged', setWalletAddress);
+    connectProvider.removeListener('chainChanged', setWalletAddress);
+    connectProvider.removeListener('accountsChanged', setChainName);
   });
 </script>
 

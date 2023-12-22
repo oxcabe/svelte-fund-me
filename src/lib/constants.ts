@@ -1,3 +1,5 @@
+export const MINIMUM_FUNDING_AMOUNT = '0.01';
+
 export const CONTRACT_ADDRESS = '0xd55741c6700C7656aB12Cb72df754147758A1D2E';
 
 export const CONTRACT_ABI = [
