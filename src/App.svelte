@@ -78,9 +78,9 @@
   main {
     display: flex;
     flex-direction: column;
-
+    text-align: center;
+    min-width: 15vw;
     padding: 72px 128px 16px 128px;
-
     background-color: #242424;
     box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, 0.2);
     border-radius: 8px;
@@ -101,6 +101,7 @@
     margin-top: 64px;
     color: #888;
     font-size: 14px;
+    white-space: nowrap;
   }
 
   .tech-logo {
@@ -126,6 +127,11 @@
   }
 
   @media (max-width: 830px) {
+    main {
+      padding: 36px 32px 8px 32px;
+      max-width: 80vw;
+    }
+
     section {
       height: 35vh;
     }

@@ -66,3 +66,12 @@
     <button on:click={connectToMetamask}>🔴 Connect</button>
   {/if}
 {/await}
+
+<style>
+  @media (max-width: 830px) {
+    button {
+      white-space: nowrap;
+      overflow: scroll;
+    }
+  }
+</style>

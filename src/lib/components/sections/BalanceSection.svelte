@@ -37,4 +37,10 @@
   .inline * {
     margin: auto 6px;
   }
+
+  @media (max-width: 830px) {
+    h2 {
+      white-space: nowrap;
+    }
+  }
 </style>
