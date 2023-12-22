@@ -6,9 +6,15 @@
   export let ethersProvider: ethers.BrowserProvider;
 
   let crowdfundedBalance = '';
+  let isReloadDisabled = false;
 
   export const getCrowdfundedBalance = async () => {
     crowdfundedBalance = formatEther(await ethersProvider.getBalance(CONTRACT_ADDRESS));
+    isReloadDisabled = true;
+
+    setInterval(() => {
+      isReloadDisabled = false;
+    }, 3000);
   };
 
   onMount(async () => {
@@ -21,7 +27,7 @@
     <div class="inline">
       <h3>Total funded:</h3>
       <h3>{crowdfundedBalance} ETH</h3>
-      <button on:click={getCrowdfundedBalance}>↻</button>
+      <button disabled={isReloadDisabled} on:click={getCrowdfundedBalance}>↻</button>
     </div>
   {:else}
     <p>Retrieving balance...</p>
