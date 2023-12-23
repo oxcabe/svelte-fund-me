@@ -49,7 +49,7 @@
         <h3>{fundingState} {FundingStateToEmoji[fundingState]}</h3>
       </div>
       {#if fundingState === FundingState.Owner}
-        <WithdrawButton disabled={crowdfundedBalanceValue === 0} {fundMeContract} />
+        <WithdrawButton disabled={crowdfundedBalanceValue === 0} on:Withdraw {fundMeContract} />
       {:else if fundingState === FundingState.Funder}
         <p>You have funded: {fundedAmount} ETH</p>
       {/if}
