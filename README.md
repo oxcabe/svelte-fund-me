@@ -1,47 +1,68 @@
-# Svelte + TS + Vite
+# Svelte FundMe
 
-This template should help get you started developing with Svelte and TypeScript in Vite.
+Web interface for interacting with the [FundMe](https://github.com/Cyfrin/foundry-fund-me-f23) smart contract.
 
-## Recommended IDE Setup
+![Svelte FundMe](docs/svelte-fundme.png)
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+## Features
+* Made with [Svelte](https://svelte.dev/), an amazing component framework.
+* Responsive-first design.
+* [Metamask](https://metamask.io/) integration.
+* Display account roles and amount funded by funder accounts.
+* Seamlessly connect, disconnect and switch accounts without refreshing.
+* Notifications for transaction status, including confirmations and errors.
+* Crowdfunding funds automatically refresh on user transactions.
+* Improved development experience with [Husky](https://github.com/typicode/husky), [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/).
 
-## Need an official Svelte framework?
 
-Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
+A video showcasing the interface functionality can be found [here](https://www.youtube.com/watch?v=QBmJYdNArG8).
 
-## Technical considerations
+## Getting started
 
-**Why use this over SvelteKit?**
+**IMPORTANT**: If you intend to use the interface with a different
+contract address in Ethereum Sepolia, Ethereum Mainnet or Anvil, see
+[Using your own contract](#using-your-own-contract) down below.
 
-- It brings its own routing solution which might not be preferable for some users.
-- It is first and foremost a framework that just happens to use Vite under the hood, not a Vite app.
+### Requirements
+* [`pnpm`](https://pnpm.io/) (recommended ^8.0.0)).
 
-This template contains as little as possible to get started with Vite + TypeScript + Svelte, while taking into account the developer experience with regards to HMR and intellisense. It demonstrates capabilities on par with the other `create-vite` templates and is a good starting point for beginners dipping their toes into a Vite + Svelte project.
+### Building from sources
 
-Should you later need the extended capabilities and extensibility provided by SvelteKit, the template has been structured similarly to SvelteKit so that it is easy to migrate.
-
-**Why `global.d.ts` instead of `compilerOptions.types` inside `jsconfig.json` or `tsconfig.json`?**
-
-Setting `compilerOptions.types` shuts out all other types not explicitly listed in the configuration. Using triple-slash references keeps the default TypeScript setting of accepting type information from the entire workspace, while also adding `svelte` and `vite/client` type information.
-
-**Why include `.vscode/extensions.json`?**
-
-Other templates indirectly recommend extensions via the README, but this file allows VS Code to prompt the user to install the recommended extension upon opening the project.
-
-**Why enable `allowJs` in the TS template?**
-
-While `allowJs: false` would indeed prevent the use of `.js` files in the project, it does not prevent the use of JavaScript syntax in `.svelte` files. In addition, it would force `checkJs: false`, bringing the worst of both worlds: not being able to guarantee the entire codebase is TypeScript, and also having worse typechecking for the existing JavaScript. In addition, there are valid use cases in which a mixed codebase may be relevant.
-
-**Why is HMR not preserving my local component state?**
-
-HMR state preservation comes with a number of gotchas! It has been disabled by default in both `svelte-hmr` and `@sveltejs/vite-plugin-svelte` due to its often surprising behavior. You can read the details [here](https://github.com/rixo/svelte-hmr#svelte-hmr).
-
-If you have state that's important to retain within a component, consider creating an external store which would not be replaced by HMR.
-
-```ts
-// store.ts
-// An extremely simple external store
-import { writable } from 'svelte/store';
-export default writable(0);
+Run the following commands in the root directory of the repository:
 ```
+pnpm install
+pnpm build
+```
+
+### Running the interface
+To open the web interface, navigate to the generated `dist/` directory
+and serve the files using the web server of your choice.
+
+For local access, the simplest way of deploying it would be to run:
+
+```
+pnpm preview
+```
+
+then access to the interface exposed in [http://localhost:4173/](http://localhost:4173/).
+
+### Using your own contract
+In order to use your own contract, replace the `CONTRACT_ADDRESS` constant
+in [`src/lib/constants.ts`](https://github.com/oxcabe/svelte-fund-me/tree/main/src/lib/constants.ts) with the
+address of the desired contract.
+
+Ensure that the ABI is  compatible to the one already configured
+in the project, `CONTRACT_ABI` located also in the same file.
+
+Currently supported chains are:
+* **Ethereum** - Mainnet.
+* **Ethereum** - Sepolia.
+* **Anvil** (or any other custom networks that use `1337` as chain ID).
+
+## Acknowledgements
+**Huge** thanks to [Patrick Collins](https://twitter.com/PatrickAlphaC) and [Cyfrin](https://www.cyfrin.io/) for their free, high quality
+educational resources.
+
+If this project helped you, feel free to share it to your friends and colleagues, or even donate!
+
+**Donation address (Ethereum/Arbitrum/Optimism/zkEVM):** 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
