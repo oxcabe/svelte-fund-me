@@ -72,7 +72,7 @@
     <p>Svelte.</p>
   </footer>
 
-  <Toaster />
+  <Toaster toastOptions={{ style: 'border-radius: 8px; background: #242424; color: #fff;' }} />
 </main>
 
 <style>
