@@ -1,6 +1,7 @@
 <script lang="ts">
   import { ethers } from 'ethers';
   import type { SDKProvider } from '@metamask/sdk';
+  import { Toaster, toast } from 'svelte-french-toast';
 
   import ConnectButton from './lib/components/buttons/ConnectButton.svelte';
   import BalanceSection from './lib/components/sections/BalanceSection.svelte';
@@ -28,6 +29,8 @@
   }
 
   function handleTxnResultEvent(e: CustomEvent<{ status: number }>) {
+    toast.success(`${e.type} transaction confirmed!`);
+
     if (e.detail.status > 0) {
       balanceSection.getCrowdfundedBalance();
     }
@@ -50,14 +53,10 @@
         <BalanceSection bind:this={balanceSection} {ethersProvider} />
       </div>
       <div id="contract-interactions">
-        <div><FundSection {fundMeContract} on:FundTxnResult={handleTxnResultEvent} /></div>
+        <div><FundSection {fundMeContract} on:Fund={handleTxnResultEvent} /></div>
         <div class="splitter"></div>
         <div>
-          <RoleSection
-            {ethersProvider}
-            {fundMeContract}
-            on:WithdrawTxnResult={handleTxnResultEvent}
-          />
+          <RoleSection {ethersProvider} {fundMeContract} on:Withdraw={handleTxnResultEvent} />
         </div>
       </div>
     </section>
@@ -72,6 +71,8 @@
     <img class="tech-logo" src={SvelteSvg} alt="Svelte Logo" />
     <p>Svelte.</p>
   </footer>
+
+  <Toaster />
 </main>
 
 <style>

@@ -1,15 +1,15 @@
 import type { EventDispatcher } from 'svelte';
 import { ethers } from 'ethers';
 
-type FundTxnResult = 'FundTxnResult';
-type WithdrawTxnResult = 'WithdrawTxnResult';
+type Fund = 'Fund';
+type Withdraw = 'Withdraw';
 
 export interface TxnResultEvent {
-  FundTxnResult: { status: number };
-  WithdrawTxnResult: { status: number };
+  Fund: { status: number };
+  Withdraw: { status: number };
 }
 
-type TxnResult = FundTxnResult | WithdrawTxnResult;
+type TxnResult = Fund | Withdraw;
 
 export function emitTxnResultEvent(
   response: ethers.ContractTransactionResponse,

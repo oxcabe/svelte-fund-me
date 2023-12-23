@@ -1,6 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher, onMount } from 'svelte';
   import { ethers, formatEther } from 'ethers';
+  import toast from 'svelte-french-toast';
 
   import { FundingState, FundingStateToEmoji } from '../../funding';
   import { type TxnResultEvent, emitTxnResultEvent } from '../../utils';
@@ -33,9 +34,11 @@
     fundMeContract
       .withdraw()
       .then((res) => {
-        emitTxnResultEvent(res, dispatch, 'WithdrawTxnResult');
+        toast.success('Withdraw transaction successfully sent!');
+        emitTxnResultEvent(res, dispatch, 'Withdraw');
       })
       .catch((err) => {
+        toast.error('Withdraw transaction failed! Check error in console.');
         console.error(err);
       });
   }
@@ -71,10 +74,12 @@
     align-items: center;
     height: 13vh;
   }
+
   .inline div {
     display: flex;
   }
-  .inline h3 {
+
+  .inline div h3 {
     margin: 5px;
   }
 

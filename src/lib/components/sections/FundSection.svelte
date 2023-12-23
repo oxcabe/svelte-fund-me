@@ -1,6 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import { ethers } from 'ethers';
+  import toast from 'svelte-french-toast';
 
   import { MINIMUM_FUNDING_AMOUNT } from '../../constants';
   import { type TxnResultEvent, emitTxnResultEvent } from '../../utils';
@@ -11,9 +12,16 @@
   let fundAmount = MINIMUM_FUNDING_AMOUNT;
 
   async function fund() {
-    fundMeContract.fund({ value: ethers.parseEther(fundAmount) }).then((res) => {
-      emitTxnResultEvent(res, dispatch, 'FundTxnResult');
-    });
+    fundMeContract
+      .fund({ value: ethers.parseEther(fundAmount) })
+      .then((res) => {
+        toast.success('Fund transaction successfully sent!');
+        emitTxnResultEvent(res, dispatch, 'Fund');
+      })
+      .catch((err) => {
+        toast.error('Withdraw transaction failed! Check error in console.');
+        console.error(err);
+      });
   }
 </script>
 
