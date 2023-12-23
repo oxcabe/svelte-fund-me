@@ -2,14 +2,16 @@
   import { onMount } from 'svelte';
   import { ethers, formatEther } from 'ethers';
   import { CONTRACT_ADDRESS } from '../../constants';
+  import { crowdfundedBalance } from '../../store';
 
   export let ethersProvider: ethers.BrowserProvider;
 
-  let crowdfundedBalance = '';
+  let crowdfundedBalanceValue = '';
   let isReloadDisabled = false;
 
   export const getCrowdfundedBalance = async () => {
-    crowdfundedBalance = formatEther(await ethersProvider.getBalance(CONTRACT_ADDRESS));
+    crowdfundedBalanceValue = formatEther(await ethersProvider.getBalance(CONTRACT_ADDRESS));
+    crowdfundedBalance.update(() => crowdfundedBalanceValue);
     isReloadDisabled = true;
 
     setInterval(() => {
@@ -26,7 +28,7 @@
   {#if crowdfundedBalance}
     <div class="inline">
       <h3>Total funded:</h3>
-      <h3>{crowdfundedBalance} ETH</h3>
+      <h3>{crowdfundedBalanceValue} ETH</h3>
       <button disabled={isReloadDisabled} on:click={getCrowdfundedBalance}>↻</button>
     </div>
   {:else}

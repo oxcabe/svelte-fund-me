@@ -5,12 +5,19 @@
   import WithdrawButton from '../buttons/WithdrawButton.svelte';
 
   import { FundingState, FundingStateToEmoji } from '../../funding';
+  import { crowdfundedBalance } from '../../store';
 
   export let ethersProvider: ethers.BrowserProvider;
   export let fundMeContract: ethers.Contract;
 
   let fundingState: FundingState;
   let fundedAmount: string;
+  let crowdfundedBalanceValue: number;
+
+  crowdfundedBalance.subscribe((value: string) => {
+    crowdfundedBalanceValue = Number(value);
+    getFundingState();
+  });
 
   $: ethersProvider && getFundingState();
 
@@ -42,7 +49,7 @@
         <h3>{fundingState} {FundingStateToEmoji[fundingState]}</h3>
       </div>
       {#if fundingState === FundingState.Owner}
-        <WithdrawButton {fundMeContract} />
+        <WithdrawButton disabled={crowdfundedBalanceValue === 0} {fundMeContract} />
       {:else if fundingState === FundingState.Funder}
         <p>You have funded: {fundedAmount} ETH</p>
       {/if}

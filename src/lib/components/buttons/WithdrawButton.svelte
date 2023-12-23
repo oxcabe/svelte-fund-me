@@ -10,6 +10,7 @@
   const dispatch = createEventDispatcher<TxnResultEvent>();
 
   let showConfirm = false;
+  export let disabled = false;
 
   function toggleConfirm() {
     showConfirm = !showConfirm;
@@ -31,6 +32,7 @@
 
 {#if showConfirm}
   <button
+    {disabled}
     id="confirm-withdraw"
     on:click={() => {
       toggleConfirm();
@@ -38,7 +40,7 @@
     }}>Confirm?</button
   >
 {:else}
-  <button on:click={toggleConfirm}>Withdraw</button>
+  <button {disabled} on:click={toggleConfirm}>Withdraw</button>
 {/if}
 
 <style>
