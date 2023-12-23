@@ -1,15 +1,14 @@
 <script lang="ts">
-  import { createEventDispatcher, onMount } from 'svelte';
+  import { onMount } from 'svelte';
   import { ethers, formatEther } from 'ethers';
-  import toast from 'svelte-french-toast';
+
+  import WithdrawButton from '../buttons/WithdrawButton.svelte';
 
   import { FundingState, FundingStateToEmoji } from '../../funding';
-  import { type TxnResultEvent, emitTxnResultEvent } from '../../utils';
 
   export let ethersProvider: ethers.BrowserProvider;
   export let fundMeContract: ethers.Contract;
 
-  const dispatch = createEventDispatcher<TxnResultEvent>();
   let fundingState: FundingState;
   let fundedAmount: string;
 
@@ -30,19 +29,6 @@
     }
   }
 
-  async function withdraw() {
-    fundMeContract
-      .withdraw()
-      .then((res) => {
-        toast.success('Withdraw transaction successfully sent!');
-        emitTxnResultEvent(res, dispatch, 'Withdraw');
-      })
-      .catch((err) => {
-        toast.error('Withdraw transaction failed! Check error in console.');
-        console.error(err);
-      });
-  }
-
   onMount(async () => {
     await getFundingState();
   });
@@ -56,7 +42,7 @@
         <h3>{fundingState} {FundingStateToEmoji[fundingState]}</h3>
       </div>
       {#if fundingState === FundingState.Owner}
-        <button on:click={withdraw}>Withdraw</button>
+        <WithdrawButton {fundMeContract} />
       {:else if fundingState === FundingState.Funder}
         <p>You have funded: {fundedAmount} ETH</p>
       {/if}
@@ -81,9 +67,5 @@
 
   .inline div h3 {
     margin: 5px;
-  }
-
-  .inline button {
-    width: 100%;
   }
 </style>
