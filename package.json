@@ -31,9 +31,12 @@
     "vite": "^5.0.12"
   },
   "dependencies": {
-    "@metamask/sdk": "^0.14.1",
+    "@metamask/sdk": "^0.14.3",
     "ethers": "^6.9.1",
     "svelte-french-toast": "^1.2.0"
+  },
+  "resolutions": {
+    "ip": "^2.0.0"
   },
   "lint-staged": {
     "**/*.{html,css,js,ts,svelte}": [
